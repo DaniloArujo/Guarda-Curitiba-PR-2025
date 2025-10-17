@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCM Curitiba</title>
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --primary-color: #16213e;
+            --secondary-color: #0f3460;
+            --accent-color: #e94560;
+            --font-color: #dcdce6;
+            --card-bg: #1f2847;
+            --success-color: #5cb85c;
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--font-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--primary-color);
+            border-radius: var(--border-radius);
+        }
+
+        header h1 {
+            color: var(--accent-color);
+            font-size: 2.5rem;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-item {
+            text-align: center;
+        }
+
+        .dashboard-item h3 {
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        .dashboard-item p {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .xp-bar-container {
+            width: 100%;
+            background-color: var(--primary-color);
+            border-radius: 20px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        #xp-bar {
+            height: 20px;
+            width: 0%;
+            background-color: var(--success-color);
+            border-radius: 20px;
+            transition: width 0.5s ease-in-out;
+            text-align: center;
+            font-size: 12px;
+            line-height: 20px;
+            color: black;
+            font-weight: bold;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .actions {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: var(--font-color);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #ff5e7e;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #1e5a9c;
+        }
+
+        .btn:disabled {
+            background-color: var(--primary-color);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .btn:disabled:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* Estilo para select desabilitado */
+        .form-group select:disabled {
+            background-color: var(--primary-color);
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #history-list {
+            list-style: none;
+        }
+
+        .history-item {
+            background-color: var(--primary-color);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .history-item div:first-child { 
+            flex-grow: 1;
+        }
+
+        .history-item-actions {
+            flex-shrink: 0;
+            margin-left: 15px;
+        }
+
+        .history-item .edit-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        .history-item .edit-btn:hover {
+            background-color: #1e5a9c;
+        }
+
+        .history-item .delete-btn {
+            background-color: #c9302c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .history-item .delete-btn:hover {
+            background-color: #d9534f;
+        }
+
+        .history-item strong {
+            color: var(--accent-color);
+        }
+
+        
+        #content-frequency-list {
+            list-style: none;
+            max-height: 400px; 
+            overflow-y: auto;
+            padding-right: 5px; 
+        }
+
+        .frequency-item {
+            background-color: var(--primary-color);
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .frequency-item strong {
+            color: var(--accent-color);
+            margin-right: 10px;
+            flex-grow: 1;
+        }
+        
+        .frequency-item span {
+            font-weight: bold;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: var(--accent-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--secondary-color);
+            background-color: var(--primary-color);
+            color: var(--font-color);
+            font-size: 1rem;
+        }
+        
+        .form-group input[type="number"] {
+           -moz-appearance: textfield;
+        }
+        
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        .settings {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--secondary-color);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .settings input[type="file"] {
+            display: none;
+        }
+        
+        .settings .btn {
+            flex-grow: 1;
+        }
+
+        #reset-btn {
+            background-color: #c9302c;
+        }
+        
+        #reset-btn:hover {
+             background-color: #d9534f;
+        }
+
+        
+        #snackbar {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: var(--success-color);
+            color: #fff;
+            text-align: center;
+            border-radius: var(--border-radius);
+            padding: 16px;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            bottom: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: visibility 0.5s, opacity 0.5s linear;
+            opacity: 0;
+        }
+        #snackbar.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        #snackbar.error {
+            background-color: var(--accent-color);
+        }
+
+        
+        .pagination-controls-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        #page-indicator {
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Guarda-Curitiba-PR-2025</h1>
+
+
+            <a href="https://blog-static.infra.grancursosonline.com.br/wp-content/uploads/2025/10/10181520/Edital-Guarda-Curitiba-PR-2025.pdf" style="color: #d9534f;" target="_blank" rel="noopener noreferrer">Edital</a>
+            
+            
+        </header>
+
+        <main>
+            <div class="card">
+                <h2>Dashboard</h2>
+                <div class="dashboard">
+                    <div class="dashboard-item">
+                        <h3>Nível</h3>
+                        <p id="level-display">1</p>
+                    </div>
+                    <div class="dashboard-item">
+                        <h3>XP (Experiência)</h3>
+                        <p id="xp-display">0 / 200</p>
+                        <div class="xp-bar-container">
+                            <div id="xp-bar"></div>
+                        </div>
+                    </div>
+                    <div class="dashboard-item">
+                        <h3>Streak (Dias seguidos)</h3>
+                        <p id="streak-display">🔥 0</p>
+                    </div>
+                    <div class="dashboard-item">
+                        <h3>Questões Feitas</h3>
+                        <p id="total-questions-display">0</p>
+                    </div>
+                     <div class="dashboard-item">
+                        <h3>Acertos Gerais</h3>
+                        <p id="accuracy-display">0%</p>
+                    </div>
+                     <div class="dashboard-item">
+                        <h3>Horas Estudadas</h3>
+                        <p id="total-time-display">0.0</p>
+                    </div>
+                </div>
+                 <div class="chart-container">
+                    <canvas id="subjectsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Frequência de Conteúdo</h2>
+                <ul id="content-frequency-list">
+                    </ul>
+            </div>
+
+            <div class="actions">
+                <button id="add-study-btn" class="btn">Registrar Sessão de Estudo</button>
+            </div>
+
+            <div class="card">
+                <h2>Histórico de Estudos</h2>
+                <ul id="history-list">
+                    </ul>
+                
+                <div id="pagination-controls" class="pagination-controls-container">
+                    <button id="prev-page-btn" class="btn btn-secondary">&lt; Anterior</button>
+                    <span id="page-indicator"></span>
+                    <button id="next-page-btn" class="btn btn-secondary">Próxima &gt;</button>
+                </div>
+            </div>
+            
+             <div class="card">
+                <h2>Configurações e Dados</h2>
+                <div class="settings">
+                    <button id="export-btn" class="btn btn-secondary">Exportar Dados (JSON)</button>
+                    <label for="import-file" class="btn btn-secondary">Importar Dados (JSON)</label>
+                    <input type="file" id="import-file" accept=".json">
+                    <button id="reset-btn" class="btn">APAGAR TUDO</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="study-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" aria-label="Fechar modal">&times;</button>
+            <h2>Registrar Nova Sessão de Estudo</h2>
+            <form id="study-form">
+                <input type="hidden" id="edit-log-id" value="">
+                <div class="form-group">
+                    <label for="date">Data do Estudo:</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Matéria Estudada:</label>
+                    <select id="subject" required>
+                        <option value="">Selecione uma matéria...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="content">Conteúdo Específico:</label>
+                    <select id="content" required disabled>
+                        <option value="">Primeiro, selecione uma matéria...</option>
+                    </select>
+                </div>
+                 <div class="form-group">
+                    <label for="time">Tempo Estudado (minutos):</label>
+                    <input type="number" id="time" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="questions">Nº de Questões Feitas:</label>
+                    <input type="number" id="questions" min="0" value="0" required>
+                </div>
+                 <div class="form-group">
+                    <label for="correct">Nº de Acertos:</label>
+                    <input type="number" id="correct" min="0" value="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Comentários e Resumo do Dia:</label>
+                    <textarea id="notes" rows="3" placeholder="O que você aprendeu? Quais foram suas dificuldades?"></textarea>
+                </div>
+                <button type="submit" class="btn">Salvar Registro</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <footer>
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center; margin-top: 50px;">
+                <img src="https://i.redd.it/861gk9gqka0c1.png" width="100" alt="">
+                <div>
+                    <p>Danilo Araujo Mota</p>
+                    <a href="https://github.com/DaniloArujo" target="_blank" style="color: #c9302c;" rel="noopener noreferrer">https://github.com/DaniloArujo</a>
+                </div>
+                 
+                
+            </div>
+            
+        </footer>
+    </div>
+    
+    <div id="snackbar">Mensagem de teste</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            
+            const SUBJECTS = {
+                "Língua Portuguesa": ["Compreensão e interpretação de texto", "Tipologia e gêneros textuais", "Figuras de linguagem", "Significação de palavras", "Sinonímia e antonímia", "Ortografia", "Acentuação gráfica", "Uso da crase", "Morfologia", "Locuções verbais", "Funções do 'que' e do 'se'", "Formação de palavras", "Elementos de comunicação", "Sintaxe", "Concordância", "Regência", "Colocação pronominal", "Pontuação", "Coesão", "Função textual dos vocábulos", "Variação linguística"],
+                "Raciocínio Lógico e Matemático": ["Noções de lógica", "Diagramas lógicos", "Lógica da argumentação", "Tipos de raciocínio", "Conectivos lógicos", "Proposições lógicas", "Teoria dos conjuntos", "Análise combinatória", "Probabilidade", "Problemas com frações, conjuntos, porcentagens", "Resolução de situações-problema", "MMC e MDC", "Razão e proporção", "Regra de três", "Equações 1º e 2º grau", "Grandezas e medidas", "Relação entre grandezas", "Média aritmética", "Geometria"],
+                "Noções de Informática": ["Conceitos básicos", "Softwares utilitários", "Hardware", "Periféricos", "Windows 10 e 11", "Microsoft Office", "LibreOffice", "Internet e busca", "Navegadores", "Segurança na Internet"],
+                "História e Geografia de Curitiba": ["História do Paraná e Curitiba", "Geografia do Paraná e Curitiba"],
+                "Direito Administrativo": ["Noções gerais", "Princípios", "Organização administrativa", "Atos administrativos", "Poderes da Administração", "Responsabilidade do Estado", "Agentes públicos", "Lei de Improbidade Administrativa", "Bens públicos", "Intervenção do Estado", "Serviços públicos", "Controle da Administração", "Processo administrativo"],
+                "Direito Constitucional": ["Direitos e deveres fundamentais", "Poder Legislativo", "Poder Executivo", "Defesa do Estado e segurança pública"],
+                "Direito Penal": ["Aplicação da lei penal", "Do crime", "Imputabilidade penal", "Concurso de pessoas", "Penas", "Medidas de segurança", "Ação penal", "Extinção da punibilidade", "Crimes contra a pessoa", "Crimes contra o patrimônio", "Crimes contra a dignidade sexual", "Crimes contra a paz pública", "Crimes contra a administração pública", "Crimes contra o Estado Democrático de Direito", "Princípios", "Culpabilidade", "Exclusão de Ilicitude"],
+                "Direito Processual Penal": ["Disposições preliminares", "Inquérito policial", "Ação penal", "Competência", "Questões e processos incidentes", "Da prova", "Do acusado e seu defensor", "Prisões cautelares", "Citações e intimações", "Aplicação provisória de interdições", "Da sentença"],
+                "Legislação": ["Estatuto dos Funcionários de Curitiba", "Constituição do Estado do Paraná", "Estatuto Geral das Guardas Municipais (Lei 13.022/14)", "Lei Orgânica de Curitiba", "Código de Trânsito Brasileiro (Lei 9.503/97)", "Lei de Improbidade Administrativa (Lei 8.429/92)", "Plano de Carreira GCM (Lei 16.203/23)", "Estatuto da Criança e do Adolescente (ECA)", "Lei Maria da Penha (Lei 11.340/06)", "Estatuto do Desarmamento (Lei 10.826/03)", "Lei de Abuso de Autoridade (Lei 13.869/19)"]
+            };
+
+            
+            const modal = document.getElementById('study-modal');
+            const addStudyBtn = document.getElementById('add-study-btn');
+            const closeBtn = document.querySelector('.close-btn');
+            const studyForm = document.getElementById('study-form');
+            const subjectSelect = document.getElementById('subject');
+            const contentInput = document.getElementById('content');
+            const editLogIdInput = document.getElementById('edit-log-id');
+            const historyList = document.getElementById('history-list');
+            const exportBtn = document.getElementById('export-btn');
+            const importFile = document.getElementById('import-file');
+            const resetBtn = document.getElementById('reset-btn');
+            const snackbar = document.getElementById('snackbar');
+            let subjectsChart = null;
+            
+            const paginationControls = document.getElementById('pagination-controls');
+            const prevPageBtn = document.getElementById('prev-page-btn');
+            const nextPageBtn = document.getElementById('next-page-btn');
+            const pageIndicator = document.getElementById('page-indicator');
+            
+            
+            const contentFrequencyList = document.getElementById('content-frequency-list');
+
+            
+            let userProfile = {
+                level: 1,
+                currentXp: 0,
+                lastStudyDay: null,
+                currentStreak: 0,
+            };
+
+            let studyLog = [];
+            let currentPage = 1;
+            const itemsPerPage = 10;
+
+            
+            
+            const showToast = (message, type = 'success') => {
+                snackbar.textContent = message;
+                snackbar.className = 'show';
+                if (type === 'error') {
+                    snackbar.classList.add('error');
+                }
+                setTimeout(() => {
+                    snackbar.className = snackbar.className.replace('show', '').replace('error', '');
+                }, 3000);
+            }
+
+            const saveData = () => {
+                localStorage.setItem('gcmStudyProfile', JSON.stringify(userProfile));
+                localStorage.setItem('gcmStudyLog', JSON.stringify(studyLog));
+            };
+
+            const loadData = () => {
+                const profile = localStorage.getItem('gcmStudyProfile');
+                const log = localStorage.getItem('gcmStudyLog');
+                if (profile) userProfile = JSON.parse(profile);
+                if (log) studyLog = JSON.parse(log);
+            };
+
+            const calculateXpToNextLevel = (level) => Math.floor(100 * Math.pow(level, 1.5));
+            
+            const updateDashboard = () => {
+                let totalQuestions = 0;
+                let totalCorrect = 0;
+                let totalMinutes = 0;
+                const subjectStats = {};
+                
+                Object.keys(SUBJECTS).forEach(sub => {
+                    subjectStats[sub] = { questions: 0, correct: 0 };
+                });
+
+                studyLog.forEach(log => {
+                    totalQuestions += log.questionsAnswered;
+                    totalCorrect += log.questionsCorrect;
+                    totalMinutes += log.timeStudiedMinutes;
+                    
+                    const sub = log.subject;
+                    if (subjectStats[sub]) {
+                        subjectStats[sub].questions += log.questionsAnswered;
+                        subjectStats[sub].correct += log.questionsCorrect;
+                    }
+                });
+
+                const accuracy = totalQuestions > 0 ? ((totalCorrect / totalQuestions) * 100).toFixed(1) : 0;
+                const totalHours = (totalMinutes / 60).toFixed(1);
+
+                userProfile.currentXp = (totalMinutes * 1) + (totalQuestions * 2) + (totalCorrect * 3);
+                
+                userProfile.level = 1;
+                let xpForNext = calculateXpToNextLevel(userProfile.level);
+                let tempXp = userProfile.currentXp;
+                
+                while (tempXp >= xpForNext) {
+                    tempXp -= xpForNext;
+                    userProfile.level++;
+                    xpForNext = calculateXpToNextLevel(userProfile.level);
+                }
+                userProfile.currentXpForDisplay = tempXp;
+                
+                const uniqueDates = [...new Set(studyLog.map(log => log.date))].sort();
+                let streak = 0;
+                if (uniqueDates.length > 0) {
+                    const today = new Date();
+                    const yesterday = new Date();
+                    yesterday.setDate(today.getDate() - 1);
+
+                    const lastLogDate = new Date(uniqueDates[uniqueDates.length - 1] + 'T00:00:00');
+                    if (lastLogDate.toDateString() === today.toDateString() || lastLogDate.toDateString() === yesterday.toDateString()) {
+                        streak = 1;
+                        for (let i = uniqueDates.length - 1; i > 0; i--) {
+                            const current = new Date(uniqueDates[i] + 'T00:00:00');
+                            const previous = new Date(uniqueDates[i-1] + 'T00:00:00');
+                            const diffTime = Math.abs(current - previous);
+                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                            if (diffDays === 1) {
+                                streak++;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+                userProfile.currentStreak = streak;
+
+                const xpToNextLevel = calculateXpToNextLevel(userProfile.level);
+                document.getElementById('level-display').textContent = userProfile.level;
+                document.getElementById('xp-display').textContent = `${Math.floor(userProfile.currentXpForDisplay)} / ${xpToNextLevel}`;
+                const xpPercentage = (userProfile.currentXpForDisplay / xpToNextLevel) * 100;
+                const xpBar = document.getElementById('xp-bar');
+                xpBar.style.width = `${xpPercentage}%`;
+                xpBar.textContent = `${xpPercentage.toFixed(0)}%`;
+
+                document.getElementById('streak-display').textContent = `🔥 ${userProfile.currentStreak}`;
+                document.getElementById('total-questions-display').textContent = totalQuestions;
+                document.getElementById('accuracy-display').textContent = `${accuracy}%`;
+                document.getElementById('total-time-display').textContent = totalHours;
+                
+                updateChart(subjectStats);
+            };
+            
+            const updateChart = (subjectStats) => {
+                const ctx = document.getElementById('subjectsChart').getContext('2d');
+                const labels = Object.keys(subjectStats);
+                const data = labels.map(sub => {
+                    const stats = subjectStats[sub];
+                    return stats.questions > 0 ? (stats.correct / stats.questions) * 100 : 0;
+                });
+
+                if (subjectsChart) {
+                    subjectsChart.destroy();
+                }
+
+                subjectsChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '% de Acerto por Matéria',
+                            data: data,
+                            backgroundColor: 'rgba(233, 69, 96, 0.6)',
+                            borderColor: 'rgba(233, 69, 96, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: { color: 'white' }
+                            },
+                            x: {
+                                ticks: { color: 'white' }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            
+            const updateContentFrequency = () => {
+                const contentCounts = {};
+                
+                studyLog.forEach(log => {
+                    
+                    if (log.content && log.content.trim() !== "") {
+                        const contentKey = log.content;
+                        
+                        contentCounts[contentKey] = (contentCounts[contentKey] || 0) + 1;
+                    }
+                });
+
+                
+                contentFrequencyList.innerHTML = '';
+
+                
+                const sortedContent = Object.keys(contentCounts).sort((a, b) => {
+                    return contentCounts[b] - contentCounts[a]; 
+                });
+
+                
+                if (sortedContent.length === 0) {
+                    contentFrequencyList.innerHTML = '<p>Nenhum conteúdo específico registrado ainda.</p>';
+                    return;
+                }
+
+                
+                sortedContent.forEach(contentName => {
+                    const count = contentCounts[contentName];
+                    const item = document.createElement('li');
+                    item.className = 'frequency-item';
+                    item.innerHTML = `
+                        <strong>${contentName}</strong>
+                        <span>${count} ${count > 1 ? 'vezes' : 'vez'}</span>
+                    `;
+                    contentFrequencyList.appendChild(item);
+                });
+            };
+
+            const renderHistory = () => {
+                historyList.innerHTML = '';
+                const sortedLog = [...studyLog].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                if (sortedLog.length === 0) {
+                     historyList.innerHTML = '<p>Nenhum registro encontrado. Comece a estudar!</p>';
+                     updatePaginationControls();
+                     return;
+                }
+                
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const paginatedItems = sortedLog.slice(startIndex, endIndex);
+
+                paginatedItems.forEach(log => {
+                    const item = document.createElement('li');
+                    item.className = 'history-item';
+                    const localDate = new Date(log.date + 'T00:00:00').toLocaleDateString('pt-BR');
+                    item.innerHTML = `
+                        <div>
+                            <p><strong>Data:</strong> ${localDate}</p>
+                            <p><strong>Matéria:</strong> ${log.subject || 'N/A'}</p>
+                            ${log.content ? `<p><strong>Conteúdo:</strong> ${log.content}</p>` : ''}
+                            <p><strong>Tempo:</strong> ${log.timeStudiedMinutes} min | <strong>Questões:</strong> ${log.questionsAnswered} | <strong>Acertos:</strong> ${log.questionsCorrect} (${log.questionsAnswered > 0 ? ((log.questionsCorrect/log.questionsAnswered)*100).toFixed(0) : 0}%)</p>
+                            ${log.notes ? `<p><em>Notas: ${log.notes}</em></p>` : ''}
+                        </div>
+                        <div class="history-item-actions">
+                            <button class="edit-btn" data-id="${log.id}">Editar</button>
+                            <button class="delete-btn" data-id="${log.id}" aria-label="Excluir registro de ${localDate}">Excluir</button>
+                        </div>
+                    `;
+                    historyList.appendChild(item);
+                });
+                
+                updatePaginationControls();
+            };
+
+            const updatePaginationControls = () => {
+                const totalItems = studyLog.length;
+                const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+                if (totalPages <= 1) {
+                    paginationControls.style.display = 'none';
+                    return;
+                }
+
+                paginationControls.style.display = 'flex';
+                pageIndicator.textContent = `Página ${currentPage} de ${totalPages}`;
+                prevPageBtn.disabled = (currentPage === 1);
+                nextPageBtn.disabled = (currentPage === totalPages);
+            };
+
+            const populateSubjects = () => {
+                subjectSelect.innerHTML = '<option value="">Selecione uma matéria...</option>';
+                Object.keys(SUBJECTS).forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject;
+                    option.textContent = subject;
+                    subjectSelect.appendChild(option);
+                });
+            };
+
+            const populateContentSuggestions = (subjectName) => {
+                contentInput.innerHTML = '';
+                
+                if (subjectName && SUBJECTS[subjectName]) {
+                    contentInput.innerHTML = '<option value="">Selecione um conteúdo...</option>';
+                    
+                    SUBJECTS[subjectName].forEach(topic => {
+                        const option = document.createElement('option');
+                        option.value = topic;
+                        option.textContent = topic;
+                        contentInput.appendChild(option);
+                    });
+                    
+                    contentInput.disabled = false;
+                } else {
+                    contentInput.innerHTML = '<option value="">Primeiro, selecione uma matéria...</option>';
+                    contentInput.disabled = true;
+                }
+            };
+            
+            const populateFormForEdit = (logId) => {
+                const log = studyLog.find(l => l.id == logId);
+                if (!log) return;
+
+                document.getElementById('date').value = log.date;
+                document.getElementById('time').value = log.timeStudiedMinutes;
+                document.getElementById('questions').value = log.questionsAnswered;
+                document.getElementById('correct').value = log.questionsCorrect;
+                document.getElementById('notes').value = log.notes;
+                editLogIdInput.value = log.id;
+
+                subjectSelect.value = log.subject || '';
+                populateContentSuggestions(log.subject);
+                contentInput.value = log.content || '';
+
+                modal.querySelector('h2').textContent = 'Editar Sessão de Estudo';
+                modal.style.display = 'block';
+            };
+
+            const saveStudySession = (e) => {
+                e.preventDefault();
+
+                const selectedSubject = subjectSelect.value;
+                const specificContent = contentInput.value;
+
+                if (!selectedSubject) {
+                    showToast('Por favor, selecione uma matéria.', 'error');
+                    return;
+                }
+                
+                if (!specificContent) {
+                    showToast('Por favor, selecione um conteúdo.', 'error');
+                    return;
+                }
+                
+                const correctCount = parseInt(document.getElementById('correct').value);
+                const questionsCount = parseInt(document.getElementById('questions').value);
+
+                if (correctCount > questionsCount) {
+                    showToast('O número de acertos não pode ser maior que o número de questões feitas.', 'error');
+                    return;
+                }
+
+                const logData = {
+                    date: document.getElementById('date').value,
+                    subject: selectedSubject,
+                    content: specificContent,
+                    timeStudiedMinutes: parseInt(document.getElementById('time').value),
+                    questionsAnswered: questionsCount,
+                    questionsCorrect: correctCount,
+                    notes: document.getElementById('notes').value
+                };
+
+                const editId = editLogIdInput.value;
+
+                if (editId) {
+                    const logIndex = studyLog.findIndex(log => log.id == editId);
+                    if (logIndex > -1) {
+                        studyLog[logIndex] = { ...studyLog[logIndex], ...logData };
+                        showToast('Registro atualizado com sucesso!');
+                    }
+                } else {
+                    logData.id = Date.now();
+                    studyLog.push(logData);
+                    currentPage = 1;
+                    showToast('Sessão registrada com sucesso!');
+                }
+                
+                updateAndSave();
+                closeModal();
+            };
+            
+            const deleteStudySession = (id) => {
+                studyLog = studyLog.filter(log => log.id !== id);
+                
+                const totalPages = Math.ceil(studyLog.length / itemsPerPage);
+                if (currentPage > totalPages) {
+                    currentPage = totalPages > 0 ? totalPages : 1;
+                }
+
+                updateAndSave();
+                showToast('Registro excluído.');
+            }
+            
+            
+            const updateAndSave = () => {
+                updateDashboard();
+                renderHistory();
+                updateContentFrequency(); 
+                saveData();
+            };
+
+            const closeModal = () => {
+                modal.style.display = 'none';
+                studyForm.reset();
+                editLogIdInput.value = '';
+                populateContentSuggestions('');
+            }
+
+            // --- EVENT LISTENERS ---
+            addStudyBtn.onclick = () => {
+                studyForm.reset();
+                editLogIdInput.value = '';
+                populateContentSuggestions('');
+                
+                document.getElementById('date').valueAsDate = new Date();
+                modal.querySelector('h2').textContent = 'Registrar Nova Sessão de Estudo';
+                modal.style.display = 'block';
+            };
+            
+            closeBtn.onclick = closeModal;
+            window.onclick = (event) => {
+                if (event.target == modal) {
+                    closeModal();
+                }
+            };
+
+            studyForm.addEventListener('submit', saveStudySession);
+            
+            subjectSelect.addEventListener('change', (e) => {
+                populateContentSuggestions(e.target.value);
+            });
+
+            historyList.addEventListener('click', (e) => {
+                if (e.target.classList.contains('delete-btn')) {
+                    const logId = parseInt(e.target.getAttribute('data-id'));
+                    if (confirm('Você tem certeza que deseja excluir este registro? Esta ação não pode ser desfeita.')) {
+                       deleteStudySession(logId);
+                    }
+                } else if (e.target.classList.contains('edit-btn')) {
+                    const logId = parseInt(e.target.getAttribute('data-id'));
+                    populateFormForEdit(logId);
+                }
+            });
+
+            exportBtn.addEventListener('click', () => {
+                if (studyLog.length === 0) {
+                    showToast('Não há dados para exportar.', 'error');
+                    return;
+                }
+                const dataStr = JSON.stringify({ profile: userProfile, log: studyLog }, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = 'gcm_curitiba_study_backup.json';
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+            });
+
+            importFile.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        if (data.profile && data.log && (data.log.length === 0 || data.log[0].subject)) {
+                            if (confirm('Isso substituirá todos os seus dados atuais. Deseja continuar?')) {
+                                userProfile = data.profile;
+                                studyLog = data.log;
+                                currentPage = 1;
+                                updateAndSave();
+                                showToast('Dados importados com sucesso!');
+                            }
+                        } else {
+                            showToast('Arquivo JSON inválido ou incompatível com esta versão.', 'error');
+                        }
+                    } catch (error) {
+                        showToast('Erro ao ler o arquivo.', 'error');
+                        console.error(error);
+                    } finally {
+                        importFile.value = '';
+                    }
+                };
+                reader.readAsText(file);
+            });
+            
+            resetBtn.addEventListener('click', () => {
+                if (confirm('ATENÇÃO! Esta ação apagará PERMANENTEMENTE todos os seus dados. Deseja continuar?')) {
+                    const confirmation = prompt('Para confirmar, digite "EXCLUIR" em maiúsculas.');
+                    if (confirmation === 'EXCLUIR') {
+                        showToast('Dados apagados com sucesso.');
+                        localStorage.removeItem('gcmStudyProfile');
+                        localStorage.removeItem('gcmStudyLog');
+                        setTimeout(() => location.reload(), 1000);
+                    } else {
+                        showToast('Exclusão cancelada.', 'error');
+                    }
+                }
+            });
+
+            prevPageBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderHistory();
+                }
+            });
+
+            nextPageBtn.addEventListener('click', () => {
+                const totalPages = Math.ceil(studyLog.length / itemsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderHistory();
+                }
+            });
+
+            
+            const init = () => {
+                loadData();
+                populateSubjects();
+                updateAndSave(); 
+            };
+
+            init();
+        });
+    </script>
+</body>
+</html>
