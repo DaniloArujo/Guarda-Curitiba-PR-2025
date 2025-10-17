@@ -6,6 +6,7 @@
     <title>GCM Curitiba</title>
     <style>
         :root {
+            /* === Cores do Tema Escuro (Padrão) === */
             --bg-color: #1a1a2e;
             --primary-color: #16213e;
             --secondary-color: #0f3460;
@@ -13,7 +14,22 @@
             --font-color: #dcdce6;
             --card-bg: #1f2847;
             --success-color: #5cb85c;
+            --delete-color: #c9302c;
+            --delete-hover: #d9534f;
+            --shadow-color: rgba(0, 0, 0, 0.2);
             --border-radius: 8px;
+
+            /* === Cores do Tema Claro === */
+            --bg-color-light: #f4f7fa;
+            --primary-color-light: #ffffff;
+            --secondary-color-light: #eef2f7;
+            --accent-color-light: #d9465e;
+            --font-color-light: #1a1a2e;
+            --card-bg-light: #ffffff;
+            --success-color-light: #4cae4c;
+            --delete-color-light: #d9534f;
+            --delete-hover-light: #c9302c;
+            --shadow-color-light: rgba(90, 110, 140, 0.1);
         }
 
         * {
@@ -27,6 +43,42 @@
             background-color: var(--bg-color);
             color: var(--font-color);
             line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* === Estilos do Tema Claro === */
+        body.light-mode {
+            --bg-color: var(--bg-color-light);
+            --primary-color: var(--primary-color-light);
+            --secondary-color: var(--secondary-color-light);
+            --accent-color: var(--accent-color-light);
+            --font-color: var(--font-color-light);
+            --card-bg: var(--card-bg-light);
+            --success-color: var(--success-color-light);
+            --delete-color: var(--delete-color-light);
+            --delete-hover: var(--delete-hover-light);
+            --shadow-color: var(--shadow-color-light);
+        }
+        
+        body.light-mode #xp-bar {
+            color: #fff;
+        }
+        
+        body.light-mode header a {
+             color: var(--accent-color);
+        }
+        body.light-mode header a:hover {
+            color: #fff;
+        }
+        
+        body.light-mode .form-group input,
+        body.light-mode .form-group select,
+        body.light-mode .form-group textarea {
+             border: 1px solid #ccc;
+        }
+        
+        body.light-mode .form-group select:disabled {
+             background-color: var(--secondary-color);
         }
 
         .container {
@@ -41,11 +93,54 @@
             padding: 20px;
             background-color: var(--primary-color);
             border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            transition: background-color 0.3s;
         }
 
         header h1 {
             color: var(--accent-color);
             font-size: 2.5rem;
+        }
+        
+        header a {
+            color: var(--accent-color);
+            font-weight: bold;
+            text-decoration: none;
+            border: 1px solid var(--accent-color);
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+        }
+        
+        header a:hover {
+            background-color: var(--accent-color);
+            color: var(--font-color);
+        }
+        
+        .theme-toggle-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 12px;
+            font-size: 1.2rem;
+            background-color: var(--secondary-color);
+            color: var(--font-color);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .theme-toggle-btn:hover {
+            background-color: var(--primary-color);
+        }
+        
+        body.light-mode .theme-toggle-btn:hover {
+             background-color: #e0e6ed;
         }
 
         main {
@@ -58,7 +153,8 @@
             background-color: var(--card-bg);
             padding: 20px;
             border-radius: var(--border-radius);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
         .dashboard {
@@ -87,6 +183,7 @@
             border-radius: 20px;
             margin-top: 5px;
             overflow: hidden;
+            transition: background-color 0.3s;
         }
 
         #xp-bar {
@@ -94,7 +191,7 @@
             width: 0%;
             background-color: var(--success-color);
             border-radius: 20px;
-            transition: width 0.5s ease-in-out;
+            transition: width 0.5s ease-in-out, background-color 0.3s;
             text-align: center;
             font-size: 12px;
             line-height: 20px;
@@ -102,11 +199,40 @@
             font-weight: bold;
         }
         
+        /* Estilos para o seletor de gráficos */
+        .chart-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+        
+        .chart-btn {
+            background-color: var(--secondary-color);
+            color: var(--font-color);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .chart-btn.active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .chart-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
         .chart-container {
             position: relative;
             height: 300px;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .actions {
@@ -125,11 +251,19 @@
             font-weight: bold;
             transition: background-color 0.3s;
         }
+        
+        body.light-mode .btn {
+            color: #fff;
+        }
 
         .btn:hover {
             background-color: #ff5e7e;
         }
         
+        body.light-mode .btn:hover {
+            background-color: #c9302c;
+        }
+
         .btn-secondary {
             background-color: var(--secondary-color);
         }
@@ -137,17 +271,36 @@
         .btn-secondary:hover {
             background-color: #1e5a9c;
         }
+        
+        body.light-mode .btn-secondary {
+             color: var(--font-color);
+             border: 1px solid #ccc;
+        }
+        body.light-mode .btn-secondary:hover {
+             background-color: #e0e6ed;
+        }
 
-        .btn:disabled {
+        .btn:disabled,
+        .btn:disabled:hover {
             background-color: var(--primary-color);
             cursor: not-allowed;
             opacity: 0.6;
         }
-        .btn:disabled:hover {
-            background-color: var(--primary-color);
+        
+        /* Foco para acessibilidade */
+        .btn:focus-visible,
+        .form-group input:focus-visible,
+        .form-group select:focus-visible,
+        .form-group textarea:focus-visible,
+        .close-btn:focus-visible,
+        .history-item .edit-btn:focus-visible,
+        .history-item .delete-btn:focus-visible,
+        .theme-toggle-btn:focus-visible,
+        .chart-btn:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
         }
-
-        /* Estilo para select desabilitado */
+        
         .form-group select:disabled {
             background-color: var(--primary-color);
             opacity: 0.6;
@@ -167,80 +320,74 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            transition: background-color 0.3s;
         }
         
         .history-item div:first-child { 
             flex-grow: 1;
+            margin-right: 15px;
         }
 
         .history-item-actions {
             flex-shrink: 0;
-            margin-left: 15px;
+            display: flex;
+            gap: 8px;
         }
 
         .history-item .edit-btn {
             background-color: var(--secondary-color);
-            color: white;
+            color: var(--font-color);
             border: none;
             padding: 8px 12px;
             border-radius: 5px;
             cursor: pointer;
-            margin-right: 8px;
+            transition: background-color 0.3s;
         }
         .history-item .edit-btn:hover {
             background-color: #1e5a9c;
         }
+        
+        body.light-mode .history-item .edit-btn {
+            border: 1px solid #ccc;
+        }
+         body.light-mode .history-item .edit-btn:hover {
+            background-color: #e0e6ed;
+        }
 
         .history-item .delete-btn {
-            background-color: #c9302c;
+            background-color: var(--delete-color);
             color: white;
             border: none;
             padding: 8px 12px;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
         
         .history-item .delete-btn:hover {
-            background-color: #d9534f;
+            background-color: var(--delete-hover);
         }
 
-        .history-item strong {
-            color: var(--accent-color);
-        }
-
-        
-        #content-frequency-list {
-            list-style: none;
-            max-height: 400px; 
-            overflow-y: auto;
-            padding-right: 5px; 
+        body.light-mode .history-item .delete-btn:hover {
+            background-color: var(--delete-hover-light);
         }
 
         .frequency-item {
             background-color: var(--primary-color);
-            padding: 12px 15px;
+            padding: 10px 15px;
             border-radius: var(--border-radius);
             margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.95rem;
+            transition: background-color 0.3s;
         }
 
-        .frequency-item strong {
-            color: var(--accent-color);
-            margin-right: 10px;
-            flex-grow: 1;
-        }
-        
         .frequency-item span {
             font-weight: bold;
-            font-size: 1rem;
-            flex-shrink: 0;
+            color: var(--accent-color);
         }
-        
 
-        
         .modal {
             display: none;
             position: fixed;
@@ -250,34 +397,42 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0,0,0,0.6);
         }
 
         .modal-content {
             background-color: var(--card-bg);
             margin: 10% auto;
-            padding: 30px;
+            padding: 25px;
             border-radius: var(--border-radius);
-            width: 90%;
+            width: 80%;
             max-width: 600px;
             position: relative;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .modal-content h2 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
         }
 
         .close-btn {
-            background: none;
-            border: none;
             color: #aaa;
             position: absolute;
-            top: 15px;
-            right: 25px;
+            top: 10px;
+            right: 20px;
             font-size: 28px;
             font-weight: bold;
+            background: none;
+            border: none;
             cursor: pointer;
         }
 
         .close-btn:hover,
         .close-btn:focus {
             color: var(--accent-color);
+            text-decoration: none;
         }
 
         .form-group {
@@ -287,6 +442,7 @@
         .form-group label {
             display: block;
             margin-bottom: 5px;
+            font-weight: bold;
         }
 
         .form-group input,
@@ -295,52 +451,26 @@
             width: 100%;
             padding: 10px;
             border-radius: 5px;
-            border: 1px solid var(--secondary-color);
-            background-color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            background-color: var(--bg-color);
             color: var(--font-color);
-            font-size: 1rem;
-        }
-        
-        .form-group input[type="number"] {
-           -moz-appearance: textfield;
-        }
-        
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
-        .settings {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--secondary-color);
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .settings input[type="file"] {
+        #import-file {
             display: none;
         }
         
-        .settings .btn {
-            flex-grow: 1;
+        .settings {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        #reset-btn {
-            background-color: #c9302c;
-        }
-        
-        #reset-btn:hover {
-             background-color: #d9534f;
-        }
-
-        
         #snackbar {
             visibility: hidden;
             min-width: 250px;
-            margin-left: -125px;
             background-color: var(--success-color);
             color: #fff;
             text-align: center;
@@ -349,10 +479,11 @@
             position: fixed;
             z-index: 2000;
             left: 50%;
+            transform: translateX(-50%);
             bottom: 30px;
             font-size: 1rem;
             font-weight: bold;
-            transition: visibility 0.5s, opacity 0.5s linear;
+            transition: visibility 0.5s, opacity 0.5s linear, background-color 0.3s;
             opacity: 0;
         }
         #snackbar.show {
@@ -373,6 +504,130 @@
         #page-indicator {
             font-weight: bold;
         }
+        
+        footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid var(--secondary-color);
+            transition: border-color 0.3s;
+        }
+        
+        .footer-content {
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: space-around; 
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+        }
+        
+        .footer-content img {
+            border-radius: var(--border-radius);
+        }
+        
+        .footer-content a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .footer-content a:hover {
+            text-decoration: underline;
+        }
+        
+        /* === Otimizações para Celular === */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+
+            header {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .theme-toggle-btn {
+                top: 15px;
+                right: 15px;
+                padding: 10px 14px;
+                font-size: 1.1rem;
+            }
+
+            .dashboard {
+                 grid-template-columns: 1fr;
+                 gap: 15px;
+            }
+            .dashboard-item p {
+                font-size: 1.5rem;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+
+            .btn {
+                padding: 14px 22px;
+                font-size: 1rem;
+            }
+
+            .modal-content {
+                margin: 5% auto;
+                padding: 20px;
+                width: 95%;
+                box-sizing: border-box;
+            }
+
+            .modal-content h2 {
+                font-size: 1.25rem;
+                margin-right: 30px;
+            }
+
+            .history-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .history-item div:first-child {
+                margin-right: 0;
+            }
+
+            .history-item-actions {
+                margin-left: 0; 
+                width: 100%;
+                display: flex;
+                gap: 10px;
+            }
+
+            .history-item-actions .edit-btn,
+            .history-item-actions .delete-btn {
+                flex-grow: 1;
+                text-align: center;
+                padding: 12px;
+            }
+
+            .pagination-controls-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .settings {
+                flex-direction: column;
+            }
+            
+            .settings .btn {
+                width: 100%;
+            }
+
+            .footer-content {
+                justify-content: center;
+            }
+        }
 
     </style>
 </head>
@@ -381,11 +636,10 @@
     <div class="container">
         <header>
             <h1>Guarda-Curitiba-PR-2025</h1>
-
-
-            <a href="https://blog-static.infra.grancursosonline.com.br/wp-content/uploads/2025/10/10181520/Edital-Guarda-Curitiba-PR-2025.pdf" style="color: #d9534f;" target="_blank" rel="noopener noreferrer">Edital</a>
-            
-            
+            <a href="https://blog-static.infra.grancursosonline.com.br/wp-content/uploads/2025/10/10181520/Edital-Guarda-Curitiba-PR-2025.pdf" target="_blank" rel="noopener noreferrer">Ver Edital</a>
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Mudar tema">
+                ☀️
+            </button>
         </header>
 
         <main>
@@ -420,7 +674,14 @@
                         <p id="total-time-display">0.0</p>
                     </div>
                 </div>
-                 <div class="chart-container">
+                
+                <!-- Seletor de gráficos -->
+                <div class="chart-selector">
+                    <button id="show-hours-btn" class="chart-btn active">Horas Estudadas</button>
+                    <button id="show-accuracy-btn" class="chart-btn">Aproveitamento</button>
+                </div>
+                
+                <div class="chart-container">
                     <canvas id="subjectsChart"></canvas>
                 </div>
             </div>
@@ -503,78 +764,221 @@
         </div>
     </div>
 
-    <div class="container">
-        <footer>
-            <div style="display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center; margin-top: 50px;">
-                <img src="https://i.redd.it/861gk9gqka0c1.png" width="100" alt="">
-                <div>
-                    <p>Danilo Araujo Mota</p>
-                    <a href="https://github.com/DaniloArujo" target="_blank" style="color: #c9302c;" rel="noopener noreferrer">https://github.com/DaniloArujo</a>
-                </div>
-                 
-                
-            </div>
-            
-        </footer>
-    </div>
+    <footer>
+        <div class="container footer-content">
+             <img src="https://i.redd.it/861gk9gqka0c1.png" width="100" alt="Avatar do criador">
+             <div>
+                 <p>Danilo Araujo Mota</p>
+                 <a href="https://www.linkedin.com/in/danilo-araujo-mota-b1342b219/" target="_blank" rel="noopener noreferrer">LinkedIn</a> | 
+                 <a href="https://github.com/DaniloArujo" target="_blank" rel="noopener noreferrer">GitHub</a>
+             </div>
+        </div>
+    </footer>
     
-    <div id="snackbar">Mensagem de teste</div>
+    <div id="snackbar"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener("DOMContentLoaded", () => {
+            // --- ELEMENTOS DO DOM ---
+            const levelDisplay = document.getElementById("level-display");
+            const xpDisplay = document.getElementById("xp-display");
+            const xpBar = document.getElementById("xp-bar");
+            const streakDisplay = document.getElementById("streak-display");
+            const totalQuestionsDisplay = document.getElementById("total-questions-display");
+            const accuracyDisplay = document.getElementById("accuracy-display");
+            const totalTimeDisplay = document.getElementById("total-time-display");
+            const subjectsChartCanvas = document.getElementById("subjectsChart").getContext("2d");
+            const contentFrequencyList = document.getElementById("content-frequency-list");
 
-            
-            const SUBJECTS = {
-                "Língua Portuguesa": ["Compreensão e interpretação de texto", "Tipologia e gêneros textuais", "Figuras de linguagem", "Significação de palavras", "Sinonímia e antonímia", "Ortografia", "Acentuação gráfica", "Uso da crase", "Morfologia", "Locuções verbais", "Funções do 'que' e do 'se'", "Formação de palavras", "Elementos de comunicação", "Sintaxe", "Concordância", "Regência", "Colocação pronominal", "Pontuação", "Coesão", "Função textual dos vocábulos", "Variação linguística"],
-                "Raciocínio Lógico e Matemático": ["Noções de lógica", "Diagramas lógicos", "Lógica da argumentação", "Tipos de raciocínio", "Conectivos lógicos", "Proposições lógicas", "Teoria dos conjuntos", "Análise combinatória", "Probabilidade", "Problemas com frações, conjuntos, porcentagens", "Resolução de situações-problema", "MMC e MDC", "Razão e proporção", "Regra de três", "Equações 1º e 2º grau", "Grandezas e medidas", "Relação entre grandezas", "Média aritmética", "Geometria"],
-                "Noções de Informática": ["Conceitos básicos", "Softwares utilitários", "Hardware", "Periféricos", "Windows 10 e 11", "Microsoft Office", "LibreOffice", "Internet e busca", "Navegadores", "Segurança na Internet"],
-                "História e Geografia de Curitiba": ["História do Paraná e Curitiba", "Geografia do Paraná e Curitiba"],
-                "Direito Administrativo": ["Noções gerais", "Princípios", "Organização administrativa", "Atos administrativos", "Poderes da Administração", "Responsabilidade do Estado", "Agentes públicos", "Lei de Improbidade Administrativa", "Bens públicos", "Intervenção do Estado", "Serviços públicos", "Controle da Administração", "Processo administrativo"],
-                "Direito Constitucional": ["Direitos e deveres fundamentais", "Poder Legislativo", "Poder Executivo", "Defesa do Estado e segurança pública"],
-                "Direito Penal": ["Aplicação da lei penal", "Do crime", "Imputabilidade penal", "Concurso de pessoas", "Penas", "Medidas de segurança", "Ação penal", "Extinção da punibilidade", "Crimes contra a pessoa", "Crimes contra o patrimônio", "Crimes contra a dignidade sexual", "Crimes contra a paz pública", "Crimes contra a administração pública", "Crimes contra o Estado Democrático de Direito", "Princípios", "Culpabilidade", "Exclusão de Ilicitude"],
-                "Direito Processual Penal": ["Disposições preliminares", "Inquérito policial", "Ação penal", "Competência", "Questões e processos incidentes", "Da prova", "Do acusado e seu defensor", "Prisões cautelares", "Citações e intimações", "Aplicação provisória de interdições", "Da sentença"],
-                "Legislação": ["Estatuto dos Funcionários de Curitiba", "Constituição do Estado do Paraná", "Estatuto Geral das Guardas Municipais (Lei 13.022/14)", "Lei Orgânica de Curitiba", "Código de Trânsito Brasileiro (Lei 9.503/97)", "Lei de Improbidade Administrativa (Lei 8.429/92)", "Plano de Carreira GCM (Lei 16.203/23)", "Estatuto da Criança e do Adolescente (ECA)", "Lei Maria da Penha (Lei 11.340/06)", "Estatuto do Desarmamento (Lei 10.826/03)", "Lei de Abuso de Autoridade (Lei 13.869/19)"]
-            };
+            const addStudyBtn = document.getElementById("add-study-btn");
+            const modal = document.getElementById("study-modal");
+            const closeModalBtn = modal.querySelector(".close-btn");
+            const studyForm = document.getElementById("study-form");
+            const subjectSelect = document.getElementById("subject");
+            const contentInput = document.getElementById("content");
+            const editLogIdInput = document.getElementById("edit-log-id");
 
-            
-            const modal = document.getElementById('study-modal');
-            const addStudyBtn = document.getElementById('add-study-btn');
-            const closeBtn = document.querySelector('.close-btn');
-            const studyForm = document.getElementById('study-form');
-            const subjectSelect = document.getElementById('subject');
-            const contentInput = document.getElementById('content');
-            const editLogIdInput = document.getElementById('edit-log-id');
-            const historyList = document.getElementById('history-list');
-            const exportBtn = document.getElementById('export-btn');
-            const importFile = document.getElementById('import-file');
-            const resetBtn = document.getElementById('reset-btn');
-            const snackbar = document.getElementById('snackbar');
-            let subjectsChart = null;
-            
-            const paginationControls = document.getElementById('pagination-controls');
-            const prevPageBtn = document.getElementById('prev-page-btn');
-            const nextPageBtn = document.getElementById('next-page-btn');
-            const pageIndicator = document.getElementById('page-indicator');
-            
-            
-            const contentFrequencyList = document.getElementById('content-frequency-list');
+            const historyList = document.getElementById("history-list");
+            const paginationControls = document.getElementById("pagination-controls");
+            const prevPageBtn = document.getElementById("prev-page-btn");
+            const nextPageBtn = document.getElementById("next-page-btn");
+            const pageIndicator = document.getElementById("page-indicator");
 
-            
-            let userProfile = {
-                level: 1,
-                currentXp: 0,
-                lastStudyDay: null,
-                currentStreak: 0,
-            };
+            const exportBtn = document.getElementById("export-btn");
+            const importFile = document.getElementById("import-file");
+            const resetBtn = document.getElementById("reset-btn");
+            const themeToggle = document.getElementById("theme-toggle");
+            const snackbar = document.getElementById("snackbar");
 
-            let studyLog = [];
+            // --- NOVOS ELEMENTOS PARA CONTROLE DE GRÁFICOS ---
+            const showHoursBtn = document.getElementById("show-hours-btn");
+            const showAccuracyBtn = document.getElementById("show-accuracy-btn");
+
+            // --- DADOS E ESTADO ---
+            let studyLog = JSON.parse(localStorage.getItem("studyLogGCM")) || [];
+            let subjectsChart;
             let currentPage = 1;
-            const itemsPerPage = 10;
+            const itemsPerPage = 5;
+            let currentChartType = 'hours'; // 'hours' ou 'accuracy'
 
-            
-            
+            const SUBJECTS = {
+                "Língua Portuguesa": [
+                    "Compreensão e interpretação de texto",
+                    "Tipologia e gêneros textuais",
+                    "Figuras de linguagem",
+                    "Significação de palavras e expressões",
+                    "Relações de sinonímia e de antonímia",
+                    "Ortografia",
+                    "Acentuação gráfica",
+                    "Uso da crase",
+                    "Morfologia: classes de palavras variáveis e invariáveis e seus empregos no texto",
+                    "Locuções verbais (perífrases verbais)",
+                    "Funções do 'que' e do 'se'",
+                    "Formação de palavras",
+                    "Elementos de comunicação",
+                    "Sintaxe: relações sintático-semânticas estabelecidas entre orações, períodos ou parágrafos (período simples e período composto por coordenação e subordinação)",
+                    "Concordância verbal e nominal",
+                    "Regência verbal e nominal",
+                    "Colocação pronominal",
+                    "Emprego dos sinais de pontuação e sua função no texto",
+                    "Elementos de coesão",
+                    "Função textual dos vocábulos",
+                    "Variação linguística"
+                ],
+                "Raciocínio Lógico e Matemático": [
+                    "Noções de lógica",
+                    "Diagramas lógicos: conjuntos e elementos",
+                    "Lógica da argumentação",
+                    "Tipos de raciocínio",
+                    "Conceitos lógicos",
+                    "Proposições lógicas simples e compostas",
+                    "Elementos de teoria dos conjuntos, análise combinatória e probabilidade",
+                    "Resolução de problemas com frações, conjuntos, potenciação e sequências com números, figuras, palavras",
+                    "Resolução de situações-problema, envolvendo: adição, subtração, multiplicação, divisão, potenciação ou radiciação com números racionais, nas suas representações fracionária ou decimal",
+                    "Mínimo múltiplo comum, Máximo divisor comum",
+                    "Porcentagem",
+                    "Razão e proporção",
+                    "Regra de três simples ou composta",
+                    "Equações do 1º e 2º grau; Sistema de equações do 1º grau",
+                    "Grandezas e medidas – quantidade, tempo, comprimento, superfície, capacidade e massa",
+                    "Relação entre grandezas – tabela ou gráfico",
+                    "Tratamento da informação – média aritmética simples",
+                    "Noções de Geometria – forma, ângulos, área, perímetro, volume, Teoremas de Pitágoras ou de Tales"
+                ],
+                "Noções de Informática": [
+                    "Conceitos e fundamentos básicos",
+                    "Conhecimento e utilização dos principais softwares utilitários (compactadores de arquivos, chat, clientes de e-mails, reprodutores de vídeo, visualizadores de imagem, antivírus)",
+                    "Conceitos básicos de Hardware (Placa-mãe, memórias, processadores (CPU)",
+                    "Periféricos de computadores",
+                    "Ambientes operacionais: utilização básica dos sistemas operacionais Windows 10 e Windows 11",
+                    "Utilização de ferramentas de texto, planilha e apresentação do pacote Microsoft Office (Word, Excel e PowerPoint) - versões 2013, 2016 e 365",
+                    "Utilização de ferramentas de texto, planilha e apresentação do pacote LibreOffice (Writer, Calc e Impress) - versões 6 e 7",
+                    "Conceitos de tecnologias relacionadas à Internet, busca e pesquisa na Web",
+                    "Navegadores de Internet: Microsoft Edge, Mozilla Firefox, Google Chrome, Ferramentas do Google",
+                    "Conceitos básicos de segurança na Internet e malwares"
+                ],
+                "História e Geografia de Curitiba": [
+                    "História do Paraná e de Curitiba: Povos Originários",
+                    "História do Paraná e de Curitiba: Guerras e Conflitos",
+                    "História do Paraná e de Curitiba: Patrimônio Histórico material e imaterial",
+                    "Geografia do Paraná e de Curitiba: Aspectos Geoeconômicos",
+                    "Geografia do Paraná e de Curitiba: Relevo",
+                    "Geografia do Paraná e de Curitiba: Geologia",
+                    "Geografia do Paraná e de Curitiba: Solo",
+                    "Geografia do Paraná e de Curitiba: Clima",
+                    "Geografia do Paraná e de Curitiba: Vegetação",
+                    "Geografia do Paraná e de Curitiba: Hidrografia",
+                    "Geografia do Paraná e de Curitiba: Aspectos climáticos",
+                    "Geografia do Paraná e de Curitiba: Mudanças climáticas",
+                    "Geografia do Paraná e de Curitiba: Recursos energéticos",
+                    "Geografia do Paraná e de Curitiba: Conflitos socioambientais e seus impactos no campo e na cidade",
+                    "Geografia do Paraná e de Curitiba: Reforma Agrária",
+                    "Geografia do Paraná e de Curitiba: Unidades de Conservação",
+                    "Geografia do Paraná e de Curitiba: Sustentabilidade",
+                    "Geografia do Paraná e de Curitiba: Cartografia e Geotecnologias Aplicadas ao Meio Ambiente",
+                    "Geografia do Paraná e de Curitiba: Localização",
+                    "Geografia do Paraná e de Curitiba: Divisão geográfica",
+                    "Geografia do Paraná e de Curitiba: Processo de urbanização",
+                    "Geografia do Paraná e de Curitiba: Aspectos políticos",
+                    "Geografia do Paraná e de Curitiba: Divisões territoriais",
+                    "Geografia do Paraná e de Curitiba: Demografia",
+                    "Geografia do Paraná e de Curitiba: Aspectos culturais",
+                    "Geografia do Paraná e de Curitiba: Comunidades Indígenas"
+                ],
+                "Noções de Direito": [
+                    "Direito Administrativo: Noções gerais, conceitos e objeto do direito administrativo",
+                    "Direito Administrativo: Princípios",
+                    "Direito Administrativo: Organização administrativa",
+                    "Direito Administrativo: Atos administrativos",
+                    "Direito Administrativo: Poderes da Administração",
+                    "Direito Administrativo: Responsabilidade do Estado",
+                    "Direito Administrativo: Agentes públicos",
+                    "Direito Administrativo: Improbidade administrativa - Lei Federal nº 8.429/1992",
+                    "Direito Administrativo: Bens públicos",
+                    "Direito Administrativo: Intervenção do Estado na propriedade privada e no domínio econômico",
+                    "Direito Administrativo: Serviços públicos",
+                    "Direito Administrativo: Controle da Administração",
+                    "Direito Administrativo: Processo administrativo",
+                    "Direito Constitucional: Direitos e deveres fundamentais - direitos e deveres individuais e coletivos",
+                    "Direito Constitucional: Direito à vida, à liberdade, à igualdade, à segurança e à propriedade",
+                    "Direito Constitucional: Direitos sociais, nacionalidade, cidadania",
+                    "Direito Constitucional: Direitos políticos; partidos políticos",
+                    "Direito Constitucional: Garantias constitucionais individuais",
+                    "Direito Constitucional: Garantias dos direitos coletivos, sociais e políticos",
+                    "Direito Constitucional: Poder Legislativo - fundamento, atribuições e garantias de independência",
+                    "Direito Constitucional: Poder Executivo - forma e sistema de governo; chefia de Estado e chefia de governo",
+                    "Direito Constitucional: Atribuições e responsabilidades do presidente da República",
+                    "Direito Constitucional: Defesa do Estado e das instituições democráticas - segurança pública; organização da segurança pública",
+                    "Direito Penal: Da aplicação da Lei Penal",
+                    "Direito Penal: Do crime",
+                    "Direito Penal: Da imputabilidade penal",
+                    "Direito Penal: Do concurso de pessoas",
+                    "Direito Penal: Das penas",
+                    "Direito Penal: Das medidas de segurança",
+                    "Direito Penal: Da ação penal",
+                    "Direito Penal: Da extinção da punibilidade",
+                    "Direito Penal: Crimes contra a pessoa",
+                    "Direito Penal: Crimes contra o patrimônio",
+                    "Direito Penal: Crimes contra a dignidade sexual",
+                    "Direito Penal: Crimes contra a paz pública",
+                    "Direito Penal: Crimes contra a administração pública",
+                    "Direito Penal: Crimes contra o Estado Democrático de Direito",
+                    "Direito Penal: Princípios",
+                    "Direito Penal: Culpabilidade",
+                    "Direito Penal: Exclusão de ilicitude",
+                    "Direito Processual Penal: Disposições preliminares do Código de Processo Penal",
+                    "Direito Processual Penal: Inquérito policial",
+                    "Direito Processual Penal: Ação penal",
+                    "Direito Processual Penal: Competência",
+                    "Direito Processual Penal: Das questões e processos incidentes",
+                    "Direito Processual Penal: Da prova",
+                    "Direito Processual Penal: Do acusado e seu defensor",
+                    "Direito Processual Penal: Das prisões cautelares, das medidas cautelares e da liberdade provisória",
+                    "Direito Processual Penal: Das citações e intimações",
+                    "Direito Processual Penal: Da aplicação provisória de interdições de direitos e medidas de segurança",
+                    "Direito Processual Penal: Da sentença"
+                ],
+                "Legislação": [
+                    "Estatuto dos Funcionários Públicos Municipais de Curitiba",
+                    "Constituição do Estado do Paraná",
+                    "Lei Federal nº 13.022/2014 - Estatuto Geral das Guardas Municipais",
+                    "Lei Orgânica do Município de Curitiba",
+                    "Lei Federal nº 9.503/1997 - Código de Trânsito Brasileiro e suas alterações",
+                    "Lei Federal nº 8.429/1992 e suas alterações - Lei de Improbidade Administrativa",
+                    "Lei Municipal nº 16.203/2023 - Plano de Carreira para os servidores integrantes do cargo de Guarda Municipal",
+                    "Lei Federal nº 8.069/1990 - Estatuto da Criança e do Adolescente (ECA)",
+                    "Lei Federal nº 11.340/2006 - Lei Maria da Penha",
+                    "Lei Federal nº 10.826/2003 - Estatuto do Desarmamento",
+                    "Lei Federal nº 13.669/2019 - Crimes de abuso de autoridade"
+                ]
+            };
+
+            // --- FUNÇÕES PRINCIPAIS ---
+            const saveData = () => {
+                localStorage.setItem("studyLogGCM", JSON.stringify(studyLog));
+            };
+
             const showToast = (message, type = 'success') => {
                 snackbar.textContent = message;
                 snackbar.className = 'show';
@@ -582,144 +986,165 @@
                     snackbar.classList.add('error');
                 }
                 setTimeout(() => {
-                    snackbar.className = snackbar.className.replace('show', '').replace('error', '');
+                    snackbar.className = snackbar.className.replace('show', '');
+                    snackbar.classList.remove('error');
                 }, 3000);
             }
 
-            const saveData = () => {
-                localStorage.setItem('gcmStudyProfile', JSON.stringify(userProfile));
-                localStorage.setItem('gcmStudyLog', JSON.stringify(studyLog));
-            };
-
-            const loadData = () => {
-                const profile = localStorage.getItem('gcmStudyProfile');
-                const log = localStorage.getItem('gcmStudyLog');
-                if (profile) userProfile = JSON.parse(profile);
-                if (log) studyLog = JSON.parse(log);
-            };
-
-            const calculateXpToNextLevel = (level) => Math.floor(100 * Math.pow(level, 1.5));
-            
             const updateDashboard = () => {
-                let totalQuestions = 0;
-                let totalCorrect = 0;
-                let totalMinutes = 0;
-                const subjectStats = {};
-                
-                Object.keys(SUBJECTS).forEach(sub => {
-                    subjectStats[sub] = { questions: 0, correct: 0 };
-                });
-
-                studyLog.forEach(log => {
-                    totalQuestions += log.questionsAnswered;
-                    totalCorrect += log.questionsCorrect;
-                    totalMinutes += log.timeStudiedMinutes;
-                    
-                    const sub = log.subject;
-                    if (subjectStats[sub]) {
-                        subjectStats[sub].questions += log.questionsAnswered;
-                        subjectStats[sub].correct += log.questionsCorrect;
-                    }
-                });
-
-                const accuracy = totalQuestions > 0 ? ((totalCorrect / totalQuestions) * 100).toFixed(1) : 0;
+                const totalMinutes = studyLog.reduce((sum, log) => sum + log.timeStudiedMinutes, 0);
                 const totalHours = (totalMinutes / 60).toFixed(1);
+                const totalQuestions = studyLog.reduce((sum, log) => sum + log.questionsAnswered, 0);
+                const totalCorrect = studyLog.reduce((sum, log) => sum + log.questionsCorrect, 0);
+                const overallAccuracy = totalQuestions > 0 ? ((totalCorrect / totalQuestions) * 100).toFixed(0) : 0;
 
-                userProfile.currentXp = (totalMinutes * 1) + (totalQuestions * 2) + (totalCorrect * 3);
-                
-                userProfile.level = 1;
-                let xpForNext = calculateXpToNextLevel(userProfile.level);
-                let tempXp = userProfile.currentXp;
-                
-                while (tempXp >= xpForNext) {
-                    tempXp -= xpForNext;
-                    userProfile.level++;
-                    xpForNext = calculateXpToNextLevel(userProfile.level);
-                }
-                userProfile.currentXpForDisplay = tempXp;
-                
-                const uniqueDates = [...new Set(studyLog.map(log => log.date))].sort();
-                let streak = 0;
-                if (uniqueDates.length > 0) {
-                    const today = new Date();
-                    const yesterday = new Date();
-                    yesterday.setDate(today.getDate() - 1);
+                const xpPerMinute = 2;
+                const xpPerQuestion = 5;
+                const xpPerCorrect = 10;
+                const totalXp = studyLog.reduce((sum, log) => {
+                    return sum + (log.timeStudiedMinutes * xpPerMinute) + (log.questionsAnswered * xpPerQuestion) + (log.questionsCorrect * xpPerCorrect);
+                }, 0);
 
-                    const lastLogDate = new Date(uniqueDates[uniqueDates.length - 1] + 'T00:00:00');
-                    if (lastLogDate.toDateString() === today.toDateString() || lastLogDate.toDateString() === yesterday.toDateString()) {
+                const calculateLevel = (xp) => {
+                    let level = 1;
+                    let requiredXp = 200;
+                    while (xp >= requiredXp) {
+                        xp -= requiredXp;
+                        level++;
+                        requiredXp = Math.floor(requiredXp * 1.5);
+                    }
+                    return { level, xpIntoLevel: xp, requiredXp };
+                };
+
+                const { level, xpIntoLevel, requiredXp } = calculateLevel(totalXp);
+
+                levelDisplay.textContent = level;
+                xpDisplay.textContent = `${xpIntoLevel} / ${requiredXp}`;
+                xpBar.style.width = `${(xpIntoLevel / requiredXp) * 100}%`;
+                xpBar.textContent = `${((xpIntoLevel / requiredXp) * 100).toFixed(0)}%`;
+
+                totalQuestionsDisplay.textContent = totalQuestions;
+                accuracyDisplay.textContent = `${overallAccuracy}%`;
+                totalTimeDisplay.textContent = totalHours;
+
+                const calculateStreak = () => {
+                    if (studyLog.length === 0) return 0;
+                    const uniqueDates = [...new Set(studyLog.map(log => log.date))].sort();
+                    let streak = 0;
+                    if (uniqueDates.length > 0) {
                         streak = 1;
-                        for (let i = uniqueDates.length - 1; i > 0; i--) {
-                            const current = new Date(uniqueDates[i] + 'T00:00:00');
-                            const previous = new Date(uniqueDates[i-1] + 'T00:00:00');
-                            const diffTime = Math.abs(current - previous);
-                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        let lastDate = new Date(uniqueDates[uniqueDates.length - 1] + 'T00:00:00');
+                        for (let i = uniqueDates.length - 2; i >= 0; i--) {
+                            const currentDate = new Date(uniqueDates[i] + 'T00:00:00');
+                            const diffTime = lastDate - currentDate;
+                            const diffDays = diffTime / (1000 * 60 * 60 * 24);
                             if (diffDays === 1) {
                                 streak++;
-                            } else {
+                                lastDate = currentDate;
+                            } else if (diffDays > 1) {
                                 break;
                             }
                         }
+                        const today = new Date();
+                        today.setHours(0,0,0,0);
+                        const mostRecentStudyDate = new Date(uniqueDates[uniqueDates.length - 1] + 'T00:00:00');
+                        const diffFromToday = (today - mostRecentStudyDate) / (1000 * 60 * 60 * 24);
+                        if (diffFromToday > 1) {
+                           streak = 0; 
+                        }
                     }
-                }
-                userProfile.currentStreak = streak;
+                    return streak;
+                };
 
-                const xpToNextLevel = calculateXpToNextLevel(userProfile.level);
-                document.getElementById('level-display').textContent = userProfile.level;
-                document.getElementById('xp-display').textContent = `${Math.floor(userProfile.currentXpForDisplay)} / ${xpToNextLevel}`;
-                const xpPercentage = (userProfile.currentXpForDisplay / xpToNextLevel) * 100;
-                const xpBar = document.getElementById('xp-bar');
-                xpBar.style.width = `${xpPercentage}%`;
-                xpBar.textContent = `${xpPercentage.toFixed(0)}%`;
+                streakDisplay.textContent = `🔥 ${calculateStreak()}`;
 
-                document.getElementById('streak-display').textContent = `🔥 ${userProfile.currentStreak}`;
-                document.getElementById('total-questions-display').textContent = totalQuestions;
-                document.getElementById('accuracy-display').textContent = `${accuracy}%`;
-                document.getElementById('total-time-display').textContent = totalHours;
-                
-                updateChart(subjectStats);
+                const subjectData = studyLog.reduce((acc, log) => {
+                    if (!acc[log.subject]) {
+                        acc[log.subject] = { time: 0, questions: 0, correct: 0 };
+                    }
+                    acc[log.subject].time += log.timeStudiedMinutes;
+                    acc[log.subject].questions += log.questionsAnswered;
+                    acc[log.subject].correct += log.questionsCorrect;
+                    return acc;
+                }, {});
+
+                updateChart(subjectData);
             };
-            
-            const updateChart = (subjectStats) => {
-                const ctx = document.getElementById('subjectsChart').getContext('2d');
-                const labels = Object.keys(subjectStats);
-                const data = labels.map(sub => {
-                    const stats = subjectStats[sub];
-                    return stats.questions > 0 ? (stats.correct / stats.questions) * 100 : 0;
-                });
 
+            const updateChart = (data) => {
+                const labels = Object.keys(data);
+                
                 if (subjectsChart) {
                     subjectsChart.destroy();
                 }
+                
+                const isLightMode = document.body.classList.contains('light-mode');
+                const tickColor = isLightMode ? getComputedStyle(document.documentElement).getPropertyValue('--font-color-light').trim() : getComputedStyle(document.documentElement).getPropertyValue('--font-color').trim();
+                const gridColor = isLightMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)';
 
-                subjectsChart = new Chart(ctx, {
+                // Preparar dados baseado no tipo de gráfico selecionado
+                let chartData, chartLabel, backgroundColor, yAxisLabel;
+                
+                if (currentChartType === 'hours') {
+                    chartData = labels.map(label => (data[label].time / 60).toFixed(1));
+                    chartLabel = 'Horas de Estudo';
+                    backgroundColor = 'rgba(233, 69, 96, 0.7)'; // Accent color
+                    yAxisLabel = 'Horas';
+                } else {
+                    chartData = labels.map(label => {
+                        const subject = data[label];
+                        return subject.questions > 0 ? ((subject.correct / subject.questions) * 100).toFixed(0) : 0;
+                    });
+                    chartLabel = 'Aproveitamento (%)';
+                    backgroundColor = 'rgba(92, 184, 92, 0.7)'; // Success color
+                    yAxisLabel = '% de Acerto';
+                }
+
+                subjectsChart = new Chart(subjectsChartCanvas, {
                     type: 'bar',
                     data: {
                         labels: labels,
-                        datasets: [{
-                            label: '% de Acerto por Matéria',
-                            data: data,
-                            backgroundColor: 'rgba(233, 69, 96, 0.6)',
-                            borderColor: 'rgba(233, 69, 96, 1)',
-                            borderWidth: 1
-                        }]
+                        datasets: [
+                            {
+                                label: chartLabel,
+                                data: chartData,
+                                backgroundColor: backgroundColor,
+                            }
+                        ]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100,
-                                ticks: { color: 'white' }
-                            },
                             x: {
-                                ticks: { color: 'white' }
+                                ticks: {
+                                    color: tickColor
+                                },
+                                grid: {
+                                    color: gridColor
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: yAxisLabel,
+                                    color: tickColor
+                                },
+                                ticks: {
+                                    color: tickColor,
+                                    callback: function(value) {
+                                        return currentChartType === 'hours' ? value : value + '%';
+                                    }
+                                },
+                                grid: {
+                                    color: gridColor
+                                }
                             }
                         },
                         plugins: {
                             legend: {
                                 labels: {
-                                    color: 'white'
+                                    color: tickColor
                                 }
                             }
                         }
@@ -727,34 +1152,27 @@
                 });
             }
 
-            
             const updateContentFrequency = () => {
                 const contentCounts = {};
                 
                 studyLog.forEach(log => {
-                    
                     if (log.content && log.content.trim() !== "") {
                         const contentKey = log.content;
-                        
                         contentCounts[contentKey] = (contentCounts[contentKey] || 0) + 1;
                     }
                 });
 
-                
                 contentFrequencyList.innerHTML = '';
 
-                
                 const sortedContent = Object.keys(contentCounts).sort((a, b) => {
                     return contentCounts[b] - contentCounts[a]; 
                 });
 
-                
                 if (sortedContent.length === 0) {
                     contentFrequencyList.innerHTML = '<p>Nenhum conteúdo específico registrado ainda.</p>';
                     return;
                 }
 
-                
                 sortedContent.forEach(contentName => {
                     const count = contentCounts[contentName];
                     const item = document.createElement('li');
@@ -769,7 +1187,7 @@
 
             const renderHistory = () => {
                 historyList.innerHTML = '';
-                const sortedLog = [...studyLog].sort((a, b) => new Date(b.date) - new Date(a.date));
+                const sortedLog = [...studyLog].sort((a, b) => new Date(b.date + 'T00:00:00') - new Date(a.date + 'T00:00:00'));
 
                 if (sortedLog.length === 0) {
                      historyList.innerHTML = '<p>Nenhum registro encontrado. Comece a estudar!</p>';
@@ -933,7 +1351,6 @@
                 showToast('Registro excluído.');
             }
             
-            
             const updateAndSave = () => {
                 updateDashboard();
                 renderHistory();
@@ -947,7 +1364,43 @@
                 editLogIdInput.value = '';
                 populateContentSuggestions('');
             }
-
+            
+            // --- Funções do Tema ---
+            const setTheme = (theme) => {
+                if (theme === 'light') {
+                    document.body.classList.add('light-mode');
+                    themeToggle.textContent = '🌙';
+                    localStorage.setItem('gcmTheme', 'light');
+                } else {
+                    document.body.classList.remove('light-mode');
+                    themeToggle.textContent = '☀️';
+                    localStorage.setItem('gcmTheme', 'dark');
+                }
+                // Atualiza o gráfico para refletir as cores do novo tema
+                if (studyLog.length > 0) {
+                    updateDashboard(); 
+                } else {
+                    updateChart({});
+                }
+            }
+            
+            // --- Funções para alternância de gráficos ---
+            const setActiveChartBtn = (activeBtn) => {
+                // Remove a classe 'active' de todos os botões
+                showHoursBtn.classList.remove('active');
+                showAccuracyBtn.classList.remove('active');
+                
+                // Adiciona a classe 'active' apenas ao botão clicado
+                activeBtn.classList.add('active');
+            }
+            
+            const switchChartType = (type) => {
+                currentChartType = type;
+                if (studyLog.length > 0) {
+                    updateDashboard();
+                }
+            }
+            
             // --- EVENT LISTENERS ---
             addStudyBtn.onclick = () => {
                 studyForm.reset();
@@ -958,87 +1411,29 @@
                 modal.querySelector('h2').textContent = 'Registrar Nova Sessão de Estudo';
                 modal.style.display = 'block';
             };
-            
-            closeBtn.onclick = closeModal;
+
+            closeModalBtn.onclick = closeModal;
+
             window.onclick = (event) => {
                 if (event.target == modal) {
                     closeModal();
                 }
             };
 
-            studyForm.addEventListener('submit', saveStudySession);
-            
+            studyForm.onsubmit = saveStudySession;
+
             subjectSelect.addEventListener('change', (e) => {
                 populateContentSuggestions(e.target.value);
             });
 
             historyList.addEventListener('click', (e) => {
-                if (e.target.classList.contains('delete-btn')) {
-                    const logId = parseInt(e.target.getAttribute('data-id'));
-                    if (confirm('Você tem certeza que deseja excluir este registro? Esta ação não pode ser desfeita.')) {
-                       deleteStudySession(logId);
-                    }
-                } else if (e.target.classList.contains('edit-btn')) {
-                    const logId = parseInt(e.target.getAttribute('data-id'));
+                if (e.target.classList.contains('edit-btn')) {
+                    const logId = e.target.dataset.id;
                     populateFormForEdit(logId);
-                }
-            });
-
-            exportBtn.addEventListener('click', () => {
-                if (studyLog.length === 0) {
-                    showToast('Não há dados para exportar.', 'error');
-                    return;
-                }
-                const dataStr = JSON.stringify({ profile: userProfile, log: studyLog }, null, 2);
-                const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-                
-                const exportFileDefaultName = 'gcm_curitiba_study_backup.json';
-                
-                const linkElement = document.createElement('a');
-                linkElement.setAttribute('href', dataUri);
-                linkElement.setAttribute('download', exportFileDefaultName);
-                linkElement.click();
-            });
-
-            importFile.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    try {
-                        const data = JSON.parse(event.target.result);
-                        if (data.profile && data.log && (data.log.length === 0 || data.log[0].subject)) {
-                            if (confirm('Isso substituirá todos os seus dados atuais. Deseja continuar?')) {
-                                userProfile = data.profile;
-                                studyLog = data.log;
-                                currentPage = 1;
-                                updateAndSave();
-                                showToast('Dados importados com sucesso!');
-                            }
-                        } else {
-                            showToast('Arquivo JSON inválido ou incompatível com esta versão.', 'error');
-                        }
-                    } catch (error) {
-                        showToast('Erro ao ler o arquivo.', 'error');
-                        console.error(error);
-                    } finally {
-                        importFile.value = '';
-                    }
-                };
-                reader.readAsText(file);
-            });
-            
-            resetBtn.addEventListener('click', () => {
-                if (confirm('ATENÇÃO! Esta ação apagará PERMANENTEMENTE todos os seus dados. Deseja continuar?')) {
-                    const confirmation = prompt('Para confirmar, digite "EXCLUIR" em maiúsculas.');
-                    if (confirmation === 'EXCLUIR') {
-                        showToast('Dados apagados com sucesso.');
-                        localStorage.removeItem('gcmStudyProfile');
-                        localStorage.removeItem('gcmStudyLog');
-                        setTimeout(() => location.reload(), 1000);
-                    } else {
-                        showToast('Exclusão cancelada.', 'error');
+                } else if (e.target.classList.contains('delete-btn')) {
+                    const logId = parseInt(e.target.dataset.id);
+                    if (confirm('Tem certeza que deseja excluir este registro? Esta ação não pode ser desfeita.')) {
+                        deleteStudySession(logId);
                     }
                 }
             });
@@ -1058,14 +1453,76 @@
                 }
             });
 
-            
-            const init = () => {
-                loadData();
-                populateSubjects();
-                updateAndSave(); 
-            };
+            exportBtn.addEventListener('click', () => {
+                if (studyLog.length === 0) {
+                    showToast('Não há dados para exportar.', 'error');
+                    return;
+                }
+                const dataStr = JSON.stringify(studyLog, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'dados_estudo_gcm_curitiba.json';
+                link.click();
+                URL.revokeObjectURL(url);
+                showToast('Dados exportados com sucesso!');
+            });
 
-            init();
+            importFile.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        if (Array.isArray(importedData) && confirm('Isso substituirá todos os seus dados atuais. Deseja continuar?')) {
+                            studyLog = importedData;
+                            currentPage = 1;
+                            updateAndSave();
+                            showToast('Dados importados com sucesso!');
+                        } else {
+                           showToast('Arquivo inválido. O arquivo deve ser um array de registros.', 'error');
+                        }
+                    } catch (error) {
+                        showToast('Erro ao ler o arquivo. Verifique o formato.', 'error');
+                    }
+                };
+                reader.readAsText(file);
+                importFile.value = '';
+            });
+
+            resetBtn.addEventListener('click', () => {
+                if (confirm('ATENÇÃO: ISSO APAGARÁ TODOS OS SEUS DADOS DE ESTUDO. ESTA AÇÃO É IRREVERSÍVEL. DESEJA CONTINUAR?')) {
+                    studyLog = [];
+                    currentPage = 1;
+                    updateAndSave();
+                    showToast('Todos os dados foram apagados.');
+                }
+            });
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+                setTheme(currentTheme === 'light' ? 'dark' : 'light');
+            });
+            
+            // --- NOVOS EVENT LISTENERS PARA CONTROLE DE GRÁFICOS ---
+            showHoursBtn.addEventListener('click', () => {
+                setActiveChartBtn(showHoursBtn);
+                switchChartType('hours');
+            });
+            
+            showAccuracyBtn.addEventListener('click', () => {
+                setActiveChartBtn(showAccuracyBtn);
+                switchChartType('accuracy');
+            });
+            
+            // --- INICIALIZAÇÃO ---
+            const savedTheme = localStorage.getItem('gcmTheme') || 'dark';
+            setTheme(savedTheme);
+            populateSubjects();
+            updateAndSave();
         });
     </script>
 </body>
